@@ -12,81 +12,95 @@ function getComputerChoice(){
 
 
 
+
 function playRound(playerSelection, computerSelection){
-    playerSelection = playerSelection.toLowerCase()
+    const result = document.querySelector('#round-result');
+    playerSelection = playerSelection.toLowerCase();
 
     if(playerSelection == "rock" && computerSelection == "paper"){
-        console.log("You lose! Paper beats rock")
+        result.textContent  = "You lose! Paper beats rock!";
         return "computer"
         
     }
 
     if(playerSelection == "rock" && computerSelection == "scissors"){
-        console.log("You win! Rock beats Scissors")
+        result.textContent = "You win! Rock beats Scissors!";
         return "player"
         
     }
 
     if(playerSelection == "paper" && computerSelection == "rock"){
-        console.log("You win! Paper beats rock")
+        result.textContent  = "You win! Paper beats rock!";
         return "player"
 
     }
 
     if(playerSelection == "paper" && computerSelection == "scissors"){
-        console.log("You lose! Scissors beats paper")
+        result.textContent  = "You lose! Scissors beats paper!";
         return "computer"
     }
 
     if(playerSelection == "scissors" && computerSelection == "rock"){
-        console.log("You lose! Rock beats Scissors")
+        result.textContent = "You lose! Rock beats Scissors!";
         return "computer"
     }
 
     if(playerSelection == "scissors" && computerSelection == "paper"){
-        console.log("You win! Scissors beats paper")
+        result.textContent  = "You win! Scissors beats paper!";
         return "player"
     }
 
     if(playerSelection == computerSelection){
-        console.log(`Both players choose ${playerSelection}! It's a draw`)
+        result.textContent = `Both players choose ${playerSelection}! It's a draw!`;
     }     
 
+}
+
+function updateScore(playerVictories, computerVictories){
+    const score = document.querySelector("#score");
+    score.textContent = `Score: Player: ${playerVictories}, Computer: ${computerVictories} wins`
+}
+
+
+function endGame(playerVictories, computerVictories){
+    const finalResult = document.querySelector("#final-result");
+    playerVictories > computerVictories? finalResult.textContent = `You get 5 wins! You are the winner!` : finalResult.textContent = `The computer get 5 wins! The computer is the winner!`
+        
+    
 }
 
 
 
 
 function game(){
-    let round = 1
+    
     let computerVictories = 0
     let playerVictories = 0
-    while(round <= 5){
-        let computerSelection = getComputerChoice();
-        let playerSelection = prompt("Choose Rock, Paper or Scissor: ")
-        
-        let result = playRound(playerSelection, computerSelection)        
-        if(result == "player"){
-            playerVictories++
-        } else if(result == "computer"){
-            computerVictories++
-        }
-        
-        round++      
-    }
-    if(playerVictories > computerVictories){
-        console.log(`You had ${playerVictories} victories and the computer had ${computerVictories} victories. You win!`)
-    }
-    else if(computerVictories > playerVictories){
-        console.log(`You had ${playerVictories} victories and the computer had ${computerVictories} victories. You lose!`)
-    }else {
-        console.log(`You had ${playerVictories} victories and the computer had ${computerVictories} victories. Its a draw!`)
+    
 
-    }
+        const buttons = document.querySelectorAll("button");
+        buttons.forEach(button => button.addEventListener('click', () =>{
+            document.querySelector("#final-result").textContent = '';
+            let result = playRound(button.textContent, getComputerChoice());           
+            if(result == "player"){
+                playerVictories++
+            } else if(result == "computer"){
+                computerVictories++
+            }
+            updateScore(playerVictories, computerVictories);
+            if(playerVictories === 5 || computerVictories === 5){
+                endGame(playerVictories, computerVictories);
+                playerVictories = 0;
+                computerVictories = 0;
+
+            }
+
+        }));    
     
 }
 
 game()
+
 
 
 
